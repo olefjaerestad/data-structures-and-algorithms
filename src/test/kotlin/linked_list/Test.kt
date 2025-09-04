@@ -10,11 +10,22 @@ class Test: FunSpec() {
         test("Should support adding a Node in the middle of a list") {
             val list = LinkedList()
             list.head = head()
-            list.get(2).shouldBe("Node 3")
+            list.get(2).shouldBe(2)
 
-            list.addAtIndex(2, "New Node")
+            list.addAtIndex(2, 123)
             val actual = list.get(2)
-            val expected = "New Node"
+            val expected = 123
+            actual.shouldBe(expected)
+        }
+
+        test("Foo") {
+            val list = LinkedList()
+//            list.head = head()
+            list.addAtIndex(1, 0)
+//            println("After: ${list.get(0)}, ${list.get(1)}")
+
+            val actual = list.get(0)
+            val expected = -1
             actual.shouldBe(expected)
         }
 
@@ -22,46 +33,47 @@ class Test: FunSpec() {
             val list = LinkedList()
             list.head = head()
 
-            list.addAtHead("New Head")
-            list.get(0).shouldBe("New Head")
+            list.addAtHead(123)
+            list.get(0).shouldBe(123)
         }
 
         test("Should support adding a Node to the end of a list") {
             val list = LinkedList()
             list.head = head()
-            val newLast = list.addAtTail("New Last")
+            val newLast = list.addAtTail(123)
 
-            newLast.shouldBe("New Last")
+            newLast.shouldBe(123)
         }
 
         test("Should support deleting a Node from the middle or end of a list") {
             val list = LinkedList()
             list.head = head()
-            list.get(2).shouldBe("Node 3")
+            list.get(2).shouldBe(2)
 
             list.deleteAtIndex(2)
-            list.get(2).shouldBe("Node 4")
+            list.get(2).shouldBe(3)
         }
 
         test("Should support deleting a Node from the head of a list") {
             val list = LinkedList()
             list.head = head()
-            list.head?.value.shouldBe("Head")
-            list.head?.next?.value.shouldBe("Node 2")
+            list.head?.value.shouldBe(0)
+            list.head?.next?.value.shouldBe(1)
 
             list.deleteAtIndex(0)
-            list.head?.value.shouldBe("Node 2")
-            list.head?.next?.value.shouldBe("Node 3")
+            list.head?.value.shouldBe(1)
+            list.head?.next?.value.shouldBe(2)
         }
     }
 }
 
 fun head(): Node {
-    val node5 = Node("Node 5")
-    val node4 = Node("Node 4", node5)
-    val node3 = Node("Node 3", node4)
-    val node2 = Node("Node 2", node3)
-    val head = Node("Head", node2)
+    val node5 = Node(4)
+    val node4 = Node(3, node5)
+    val node3 = Node(2, node4)
+    val node2 = Node(1, node3)
+    val head = Node(0, node2)
+//    val head = Node(0)
 
     return head
 }

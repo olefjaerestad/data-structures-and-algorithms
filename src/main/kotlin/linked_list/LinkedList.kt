@@ -3,30 +3,30 @@ package org.example.linked_list
 class LinkedList {
     var head: Node? = null
 
-    fun get(index: Int): String? {
+    fun get(index: Int): Int {
         var counter = 0
         var node = head
 
         while (counter <= index) {
-            if (counter == index) {
-                return node?.value
+            if (counter == index && node is Node) {
+                return node.value
             } else {
                 node = node?.next
                 counter++
             }
         }
 
-        return null
+        return -1
     }
 
-    fun addAtHead(value: String): String {
+    fun addAtHead(value: Int): Int {
         val newHead = Node(value)
         newHead.next = head
         head = newHead
         return newHead.value
     }
 
-    fun addAtTail(value: String): String {
+    fun addAtTail(value: Int): Int {
         val newTail = Node(value)
 
         if (head == null) {
@@ -49,24 +49,27 @@ class LinkedList {
         return newTail.value
     }
 
-    fun addAtIndex(index: Int, value: String): String? {
+    fun addAtIndex(index: Int, value: Int): Int? {
         val node = Node(value)
 
-        if (head == null) {
+        if (index == 0) {
+            node.next = head
             head = node
             return node.value
         }
 
-        var currentNode = head
+        var current = head
+        var prev = head
         var counter = 0
 
-        while (counter < index) {
-            if (counter == index - 1) {
-                node.next = currentNode?.next
-                currentNode?.next = node
+        while (counter <= index) {
+            if (counter == index) {
+                node.next = prev?.next
+                prev?.next = node
                 return node.value
             } else {
-                currentNode = currentNode?.next
+                prev = current
+                current = current?.next
                 counter++
             }
         }
