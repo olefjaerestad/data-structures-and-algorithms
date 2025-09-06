@@ -106,4 +106,20 @@ class LinkedList {
 
         return index
     }
+
+    fun hasCycle(head: Node): Boolean {
+        var slow: Node? = head
+        var fast: Node? = head
+
+        while (fast is Node) {
+            slow = slow?.next
+            fast = fast.next?.next
+
+            if (fast is Node && slow === fast) {
+                return true
+            }
+        }
+
+        return false
+    }
 }

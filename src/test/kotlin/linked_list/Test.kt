@@ -18,17 +18,6 @@ class Test: FunSpec() {
             actual.shouldBe(expected)
         }
 
-        test("Foo") {
-            val list = LinkedList()
-//            list.head = head()
-            list.addAtIndex(1, 0)
-//            println("After: ${list.get(0)}, ${list.get(1)}")
-
-            val actual = list.get(0)
-            val expected = -1
-            actual.shouldBe(expected)
-        }
-
         test("Should support adding a Node to the start of a list (head)") {
             val list = LinkedList()
             list.head = head()
@@ -64,6 +53,22 @@ class Test: FunSpec() {
             list.head?.value.shouldBe(1)
             list.head?.next?.value.shouldBe(2)
         }
+
+        context("Given a head, should detect if the list contains a cycle or not") {
+            test("Does contain a cycle") {
+                val list = LinkedList()
+                val actual = list.hasCycle(headWithCycle())
+                val expected = true
+                actual.shouldBe(expected)
+            }
+
+            test("Does not contain a cycle") {
+                val list = LinkedList()
+                val actual = list.hasCycle(head())
+                val expected = false
+                actual.shouldBe(expected)
+            }
+        }
     }
 }
 
@@ -73,7 +78,17 @@ fun head(): Node {
     val node3 = Node(2, node4)
     val node2 = Node(1, node3)
     val head = Node(0, node2)
-//    val head = Node(0)
+
+    return head
+}
+
+fun headWithCycle(): Node {
+    val node5 = Node(4)
+    val node4 = Node(3, node5)
+    val node3 = Node(2, node4)
+    val node2 = Node(1, node3)
+    val head = Node(0, node2)
+    node5.next = node3
 
     return head
 }
