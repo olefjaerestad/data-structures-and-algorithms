@@ -1,14 +1,14 @@
 package org.example.linked_list
 
 class LinkedList {
-    var head: Node? = null
+    var head: ListNode? = null
 
     fun get(index: Int): Int {
         var counter = 0
         var node = head
 
         while (counter <= index) {
-            if (counter == index && node is Node) {
+            if (counter == index && node is ListNode) {
                 return node.value
             } else {
                 node = node?.next
@@ -20,14 +20,14 @@ class LinkedList {
     }
 
     fun addAtHead(value: Int): Int {
-        val newHead = Node(value)
+        val newHead = ListNode(value)
         newHead.next = head
         head = newHead
         return newHead.value
     }
 
     fun addAtTail(value: Int): Int {
-        val newTail = Node(value)
+        val newTail = ListNode(value)
 
         if (head == null) {
             head = newTail
@@ -36,7 +36,7 @@ class LinkedList {
 
         var lastNode = head
 
-        while (lastNode is Node) {
+        while (lastNode is ListNode) {
             if (lastNode.next == null) {
                 break
             } else {
@@ -50,7 +50,7 @@ class LinkedList {
     }
 
     fun addAtIndex(index: Int, value: Int): Int? {
-        val node = Node(value)
+        val node = ListNode(value)
 
         if (index == 0) {
             node.next = head
@@ -88,12 +88,12 @@ class LinkedList {
         }
 
 
-        var prev: Node? = null
-        var current: Node? = head
+        var prev: ListNode? = null
+        var current: ListNode? = head
         var counter = 0
 
         // Start from beginning of list and find the Node pointing to `index`.
-        while (current is Node) {
+        while (current is ListNode) {
             if (counter == index) {
                 prev?.next = current.next
                 return index
@@ -107,19 +107,50 @@ class LinkedList {
         return index
     }
 
-    fun hasCycle(head: Node): Boolean {
-        var slow: Node? = head
-        var fast: Node? = head
+    fun hasCycle(head: ListNode): Boolean {
+        var slow: ListNode? = head
+        var fast: ListNode? = head
 
-        while (fast is Node) {
+        while (fast is ListNode) {
             slow = slow?.next
             fast = fast.next?.next
 
-            if (fast is Node && slow === fast) {
+            if (fast is ListNode && slow === fast) {
                 return true
             }
         }
 
         return false
+    }
+
+    /**
+     * @see <a href="https://www.youtube.com/shorts/qgXYgkeEXg8">Explanation</a>
+     */
+    fun detectCycle(head: ListNode): ListNode? {
+        var slow: ListNode? = head
+        var fast: ListNode? = head
+
+        // Find meeting point
+        while (fast is ListNode) {
+            slow = slow?.next
+            fast = fast.next?.next
+
+            if (fast is ListNode && slow === fast) {
+                break
+            }
+        }
+
+        if (fast === null) {
+            return null
+        }
+
+        // Find cycle start
+        var p1: ListNode? = head
+        while (p1 != slow) {
+            p1 = p1?.next
+            slow = slow?.next
+        }
+
+        return p1
     }
 }

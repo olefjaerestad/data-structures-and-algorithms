@@ -3,7 +3,7 @@ package org.example.binary_tree.tests.linked_list
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import org.example.linked_list.LinkedList
-import org.example.linked_list.Node
+import org.example.linked_list.ListNode
 
 class Test: FunSpec() {
     init {
@@ -69,26 +69,59 @@ class Test: FunSpec() {
                 actual.shouldBe(expected)
             }
         }
+
+        context("Given a head, should detect the Node where a cycle begins") {
+            test("Does contain a cycle, where cycle starts in the middle of the list") {
+                val list = LinkedList()
+                val head = headWithCycle()
+                val actual = list.detectCycle(head)
+                val expected = head.next?.next
+                actual?.shouldBe(expected)
+            }
+
+            test("Does contain a cycle, where cycle starts at head") {
+                val list = LinkedList()
+                val head = headWithCycleAtHead()
+                val actual = list.detectCycle(head)
+                val expected = head
+                actual?.shouldBe(expected)
+            }
+
+            test("Does not contain a cycle") {
+                val list = LinkedList()
+                val actual = list.detectCycle(head())
+                val expected = null
+                actual.shouldBe(expected)
+            }
+        }
     }
 }
 
-fun head(): Node {
-    val node5 = Node(4)
-    val node4 = Node(3, node5)
-    val node3 = Node(2, node4)
-    val node2 = Node(1, node3)
-    val head = Node(0, node2)
+fun head(): ListNode {
+    val node5 = ListNode(4)
+    val node4 = ListNode(3, node5)
+    val node3 = ListNode(2, node4)
+    val node2 = ListNode(1, node3)
+    val head = ListNode(0, node2)
 
     return head
 }
 
-fun headWithCycle(): Node {
-    val node5 = Node(4)
-    val node4 = Node(3, node5)
-    val node3 = Node(2, node4)
-    val node2 = Node(1, node3)
-    val head = Node(0, node2)
+fun headWithCycle(): ListNode {
+    val node5 = ListNode(4)
+    val node4 = ListNode(3, node5)
+    val node3 = ListNode(2, node4)
+    val node2 = ListNode(1, node3)
+    val head = ListNode(0, node2)
     node5.next = node3
+
+    return head
+}
+
+fun headWithCycleAtHead(): ListNode {
+    val node2 = ListNode(1)
+    val head = ListNode(0, node2)
+    node2.next = head
 
     return head
 }
