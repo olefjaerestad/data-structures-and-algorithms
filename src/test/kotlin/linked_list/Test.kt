@@ -1,6 +1,8 @@
 package org.example.binary_tree.tests.linked_list
 
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.example.linked_list.LinkedList
 import org.example.linked_list.ListNode
@@ -90,8 +92,25 @@ class Test: FunSpec() {
             test("Does not contain a cycle") {
                 val list = LinkedList()
                 val actual = list.detectCycle(head())
-                val expected = null
+                actual.shouldBeNull()
+            }
+        }
+
+        context("Given the heads of 2 LinkedLists, should find the Node where the lists intersect") {
+            test("Does contain an intersection") {
+                val list = LinkedList()
+                val heads = headsWithIntersection()
+                val actual = list.getIntersectionNodeFast(heads.first, heads.second)
+                val expected = heads.first.next
+
+                actual.shouldNotBeNull()
                 actual.shouldBe(expected)
+            }
+
+            test("Does not contain an intersection") {
+                val list = LinkedList()
+                val actual = list.getIntersectionNodeSlow(head(), head())
+                actual.shouldBeNull()
             }
         }
     }
@@ -124,4 +143,18 @@ fun headWithCycleAtHead(): ListNode {
     node2.next = head
 
     return head
+}
+
+fun headsWithIntersection(): Pair<ListNode, ListNode> {
+    val node5 = ListNode(4)
+    val node4 = ListNode(3, node5)
+    val node3 = ListNode(2, node4)
+    val node2 = ListNode(1, node3)
+
+    val head1 = ListNode(0)
+    val head2 = node2
+
+    head1.next = node2
+
+    return Pair<ListNode, ListNode>(head1, head2)
 }

@@ -1,5 +1,8 @@
 package org.example.linked_list
 
+import kotlin.math.max
+import kotlin.math.min
+
 class LinkedList {
     var head: ListNode? = null
 
@@ -152,5 +155,99 @@ class LinkedList {
         }
 
         return p1
+    }
+
+    /**
+     * @see <a href="https://www.youtube.com/shorts/WjK-_KN0_Ck">Explanation</a>
+     * Approach: Find the length `difference` between the lists, then travel `difference`
+     * in the longest list, before traveling 1 node at a time afterward.
+     */
+    fun getIntersectionNodeSlow(headA: ListNode, headB: ListNode): ListNode? {
+        var pointerA: ListNode? = headA
+        var pointerB: ListNode? = headB
+        var lengthA = 0
+        var lengthB = 0
+
+        while (pointerA is ListNode) {
+            pointerA = pointerA.next
+            lengthA++
+        }
+
+        while (pointerB is ListNode) {
+            pointerB = pointerB.next
+            lengthB++
+        }
+
+        val lengthDiff = max(lengthA, lengthB) - min(lengthA, lengthB)
+        var longPointer: ListNode? = if (lengthA >= lengthB) headA else headB
+        var shortPointer: ListNode? = if (lengthA >= lengthB) headB else headA
+
+        for (i in 0..<lengthDiff) {
+            longPointer = longPointer?.next
+        }
+
+        while (longPointer is ListNode && shortPointer is ListNode) {
+            if (longPointer === shortPointer) {
+                return longPointer
+            }
+
+            longPointer = longPointer.next
+            shortPointer = shortPointer.next
+        }
+
+        return null
+    }
+
+    /**
+     * @see <a href="https://www.youtube.com/shorts/WjK-_KN0_Ck">Explanation</a>
+     * Approach: Travel to the end of both lists, then move pointers to the start of the other list.
+     * This ensures both pointers will always have to travel the exact same number of steps, and
+     * they will always meet at the intersection if there is one.
+     */
+    fun getIntersectionNodeFast(headA: ListNode, headB: ListNode): ListNode? {
+        var pointerA: ListNode? = headA
+        var pointerB: ListNode? = headB
+        var movedPointerAToB = false
+        var movedPointerBToA = false
+
+        while (pointerA is ListNode && pointerB is ListNode) {
+            if (pointerA == pointerB) {
+                return pointerA
+            }
+
+
+            // Approach 1: Using a `when` expression:
+//            pointerA = when {
+//                pointerA.next is ListNode -> pointerA.next
+//                !movedPointerAToB -> {
+//                    movedPointerAToB = true
+//                    headB
+//                }
+//                else -> null
+//            }
+//            pointerB = when {
+//                pointerB.next is ListNode -> pointerB.next
+//                !movedPointerBToA -> {
+//                    movedPointerBToA = true
+//                    headA
+//                }
+//                else -> null
+//            }
+
+            // Approach 2: Using `if` statements:
+            val pointerANext = pointerA.next
+            val pointerBNext = pointerB.next
+            pointerA = pointerANext ?: if (movedPointerAToB) null else headB
+            pointerB = pointerBNext ?: if (movedPointerBToA) null else headA
+
+            if (!movedPointerAToB && pointerANext == null) {
+                movedPointerAToB = true
+            }
+            if (!movedPointerBToA && pointerBNext == null) {
+                movedPointerBToA = true
+            }
+        }
+
+        return null
     }
 }
