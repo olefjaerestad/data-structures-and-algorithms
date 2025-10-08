@@ -250,4 +250,30 @@ class LinkedList {
 
         return null
     }
+
+    /**
+     * @see <a href="https://www.youtube.com/shorts/bkYk0yWi6zo">Explanation</a>
+     * Approach: Give fast pointer a head start of n steps. When fast has reached end of list,
+     * slow is at the node _before_ the one we want to remove.
+     * Special case: we insert a dummy Node ahead of `head`, in case it's `head` we want to remove.
+     */
+    fun removeNthFromEnd(head: ListNode, n: Int): ListNode? {
+        val dummy = ListNode(-1, head)
+        var slow: ListNode? = dummy
+        var fast: ListNode? = dummy
+
+        // Give fast a head start of n steps
+        for (i in 0..<n) {
+            fast = fast?.next
+        }
+
+        while (fast?.next is ListNode) {
+            slow = slow?.next
+            fast = fast.next
+        }
+
+        slow?.next = slow.next?.next
+        // Will either be head, the Node after head or null:
+        return dummy.next
+    }
 }

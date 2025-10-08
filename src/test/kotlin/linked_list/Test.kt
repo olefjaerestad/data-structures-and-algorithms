@@ -113,6 +113,43 @@ class Test: FunSpec() {
                 actual.shouldBeNull()
             }
         }
+
+        context("Given a head, should support deleting a Node n steps from the end of a list") {
+            test("Deleting a Node from the middle of the list") {
+                val list = LinkedList()
+                val head = head()
+                val expected = head.next?.next?.next?.next
+                val actual = list.removeNthFromEnd(head, 2)?.next?.next?.next
+
+                actual.shouldNotBeNull()
+                actual.shouldBe(expected)
+            }
+
+
+            test("Deleting the last Node of the list") {
+                val list = LinkedList()
+                val head = ListNode(1)
+                val node2 = ListNode(2)
+                head.next = node2
+                val actual = list.removeNthFromEnd(head, 2)
+                val expected = node2
+
+                actual.shouldNotBeNull()
+                actual.shouldBe(expected)
+            }
+
+            test("Deleting the head of the list") {
+                val list = LinkedList()
+                val head = ListNode(1)
+                val node2 = ListNode(2)
+                head.next = node2
+                val actual = list.removeNthFromEnd(head, 1)
+                val expected = head
+
+                actual.shouldNotBeNull()
+                actual.shouldBe(expected)
+            }
+        }
     }
 }
 
