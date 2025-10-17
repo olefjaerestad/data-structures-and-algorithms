@@ -150,6 +150,19 @@ class Test: FunSpec() {
                 actual.shouldBe(expected)
             }
         }
+
+        test("Should support reversing a LinkedList") {
+            val list = LinkedList()
+            val head = head()
+            val expected1 = head.next?.next?.next?.next
+            val expected2 = head.next?.next?.next
+            val actual = list.reverseList(head)
+
+            actual.shouldNotBeNull()
+            actual.shouldBe(expected1)
+            actual.next.shouldNotBeNull()
+            actual.next.shouldBe(expected2)
+        }
     }
 }
 

@@ -276,4 +276,44 @@ class LinkedList {
         // Will either be head, the Node after head or null:
         return dummy.next
     }
+
+    /**
+     * Approach: Looping through the list, keep pointers to current node and start of list.
+     * For each iteration, move `current` to start of list and set `start` to `current`.
+     */
+    fun reverseListCustomImplementation(head: ListNode): ListNode {
+        var start = head
+        var current: ListNode? = head.next
+
+        while (current is ListNode) {
+            val currentNext = current.next
+            current.next = start
+            start = current
+            current = currentNext
+        }
+
+        head.next = null
+
+        return start
+    }
+
+    /**
+     * @see <a href="https://www.youtube.com/shorts/uyTL80yvTrw">Explanation</a>
+     * Approach: Looping through the list, keep pointers to previous, current and next nodes.
+     * For each iteration, update `current.next` to prev.
+     */
+    fun reverseList(head: ListNode): ListNode? {
+        var prev: ListNode? = null
+        var curr: ListNode? = head
+        var next: ListNode? = head.next
+
+        while (curr is ListNode) {
+            curr.next = prev
+            prev = curr
+            curr = next
+            next = next?.next
+        }
+
+        return prev
+    }
 }
